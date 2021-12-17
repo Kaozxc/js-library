@@ -38,14 +38,11 @@ let myLibrary = [
   },
 ];
 
-function book(title, author, pages, read) {
+function Book(title, author, pages, read) {
   this.title = title;
   this.author = author;
   this.pages = pages;
   this.read = read;
-  this.info = function () {
-    return `${title} by ${author}, ${pages} pages, ${read}`;
-  };
 }
 
 function addBookToLibrary() {
@@ -56,16 +53,12 @@ function addBookToLibrary() {
   let userInputAuthor = prompt("Please provide Author.");
   let userInputPages = prompt("Please provide number of pages.");
   let userInputRead = prompt("Please tell if you read the book.");
-  let newBook = {
-    title: userInputTitle,
-    author: userInputAuthor,
-    pages: userInputPages,
-    read: userInputRead,
-  };
 
-  myLibrary.push(newBook);
+  myLibrary.push(
+    new Book(userInputTitle, userInputAuthor, userInputPages, userInputRead)
+  );
   console.log(myLibrary);
-  generate_table();
+  generateTable();
 }
 
 function displayBook() {
@@ -74,7 +67,7 @@ function displayBook() {
 
 function removeBook() {
   myLibrary.pop();
-  generate_table();
+  generateTable();
 }
 
 let removeBtn = document.querySelector("#remove");
@@ -85,38 +78,37 @@ let removeBtn5 = document.querySelector("#remove5");
 let removeBtn6 = document.querySelector("#remove6");
 
 removeBtn.addEventListener("click", () => {
-  myLibrary.pop();
-  generate_table();
+  myLibrary.splice(1, 1);
+  generateTable();
 });
 removeBtn2.addEventListener("click", () => {
-  myLibrary.pop();
-  generate_table();
+  myLibrary.splice(2, 1);
+  generateTable();
 });
 removeBtn3.addEventListener("click", () => {
-  myLibrary.pop();
-  generate_table();
+  myLibrary.splice(3, 1);
+  generateTable();
 });
 removeBtn4.addEventListener("click", () => {
-  myLibrary.pop();
-  generate_table();
+  myLibrary.splice(4, 1);
+  generateTable();
 });
 removeBtn5.addEventListener("click", () => {
-  myLibrary.pop();
-  generate_table();
+  myLibrary.splice(5, 1);
+  generateTable();
 });
 removeBtn6.addEventListener("click", () => {
-  myLibrary.pop();
-  generate_table();
+  myLibrary.splice(6, 1);
+  generateTable();
 });
 
-function generate_table() {
+function generateTable() {
   // get the reference for the body
   let body = document.getElementsByTagName("body")[0];
 
   // creates a <table> element and a <tbody> element
   let tbl = document.createElement("table");
   let tblBody = document.createElement("tbody");
-
   // creating all cells
   for (var i = 0; i < myLibrary.length; i++) {
     // creates a table row
@@ -130,15 +122,6 @@ function generate_table() {
       let cellTextAuthor = document.createTextNode(myLibrary[i].author);
       let cellTextPages = document.createTextNode(myLibrary[i].pages);
       let cellTextRead = document.createTextNode(myLibrary[i].read);
-      let cellText = document.createTextNode(
-        myLibrary[i].title +
-          "," +
-          myLibrary[i].author +
-          "," +
-          myLibrary[i].pages +
-          "," +
-          myLibrary[i].read
-      );
       if (j === 0) {
         cell.appendChild(cellTextTitle);
         row.appendChild(cell);
@@ -179,16 +162,4 @@ function generate_table() {
   tbl.setAttribute("border", "2");
 }
 
-generate_table();
-
-// if (i === 0) {
-//   row.appendChild(removeBtn);
-// } else if (i === 1) {
-//   row.appendChild(removeBtn);
-// } else if (i === 2) {
-//   row.appendChild(removeBtn);
-// } else if (i === 3) {
-//   row.appendChild(removeBtn);
-// } else {
-//   row.appendChild(removeBtn);
-// }
+generateTable();
