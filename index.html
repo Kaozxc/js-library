@@ -8,8 +8,19 @@
   </head>
 
   <body>
-    <!--<input type="button" value="Generate a table." onclick="generate_table()" /> -->
-    <input type="button" value="NEW BOOK" onclick="addBookToLibrary()" />
+    <div class="menu">
+    <input type="text" id="bookTitle" placeholder="Book Title" /></br>
+    <input type="text" id="bookAuthor" placeholder="Books Author" /></br>
+    <input type="text" id="bookPages" placeholder="Number of pages" /></br>
+    <label for="bookRead">Status of a book</label>
+    <select id="bookRead">
+      <option disabled>--Please choose a option--</option>
+      <option value="read">Read</option>
+      <option value="inProgress">In Progress</option>
+      <option value="notRead">Not Read</option>
+    </select></br>
+    <input type="button" value="SUBMIT" id="submit" /></br>
+  </div></br>
     <input type="button" value="X" id="remove" />
     <input type="button" value="X" id="remove2" />
     <input type="button" value="X" id="remove3" />

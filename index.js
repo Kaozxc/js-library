@@ -48,15 +48,24 @@ function Book(title, author, pages, read) {
 function addBookToLibrary() {
   let table = document.querySelector("table");
   table.innerHTML = "";
+  if (
+    bookTitle.value &&
+    bookAuthor.value &&
+    bookPages.value &&
+    readOptions.value
+  ) {
+    myLibrary.push(
+      new Book(
+        bookTitle.value,
+        bookAuthor.value,
+        bookPages.value,
+        readOptions.value
+      )
+    );
+  } else {
+    alert("Please provide more information");
+  }
 
-  let userInputTitle = prompt("Please provide your favourite book title.");
-  let userInputAuthor = prompt("Please provide Author.");
-  let userInputPages = prompt("Please provide number of pages.");
-  let userInputRead = prompt("Please tell if you read the book.");
-
-  myLibrary.push(
-    new Book(userInputTitle, userInputAuthor, userInputPages, userInputRead)
-  );
   console.log(myLibrary);
   generateTable();
 }
@@ -70,12 +79,26 @@ function removeBook() {
   generateTable();
 }
 
+function changeRead() {}
+
+let submit = document.querySelector("#submit");
+let bookTitle = document.querySelector("#bookTitle");
+let bookAuthor = document.querySelector("#bookAuthor");
+let bookPages = document.querySelector("#bookPages");
+let readOptions = document.querySelector("#bookRead");
+
 let removeBtn = document.querySelector("#remove");
 let removeBtn2 = document.querySelector("#remove2");
 let removeBtn3 = document.querySelector("#remove3");
 let removeBtn4 = document.querySelector("#remove4");
 let removeBtn5 = document.querySelector("#remove5");
 let removeBtn6 = document.querySelector("#remove6");
+let input2 = document.querySelector("#submit");
+
+submit.addEventListener("click", (e) => {
+  addBookToLibrary();
+  displayBook();
+});
 
 removeBtn.addEventListener("click", () => {
   myLibrary.splice(1, 1);
