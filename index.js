@@ -1,145 +1,119 @@
-// "The Hobbit by J.R.R. Tolkien, 295 pages, not read yet"
 let myLibrary = [
   {
-    title: "Title",
-    author: "Author",
-    pages: "Pages",
-    read: "Read",
-  },
-  {
-    title: "The Hobbit",
+    id: uuidv4(),
+    title: "TheHobbit",
     author: "Tolkien",
     pages: 503,
     read: true,
   },
   {
-    title: "Harry Potter",
+    id: uuidv4(),
+    title: "HarryPotter",
     author: "Rowling",
     pages: 403,
     read: false,
   },
   {
+    id: uuidv4(),
     title: "Narnia",
     author: "Lewis",
     pages: 303,
     read: true,
   },
   {
+    id: uuidv4(),
     title: "Diuna",
     author: "Herbert",
     pages: 400,
     read: false,
   },
   {
-    title: "Tom Clancy",
+    id: uuidv4(),
+    title: "TomClancy",
     author: "Clancy",
     pages: 150,
     read: true,
   },
 ];
 
-function Book(title, author, pages, read) {
+function Book(id, title, author, pages, read) {
+  this.id = id;
   this.title = title;
   this.author = author;
   this.pages = pages;
   this.read = read;
 }
 
-function addBookToLibrary() {
-  let table = document.querySelector("table");
-  table.innerHTML = "";
-  if (
-    bookTitle.value &&
-    bookAuthor.value &&
-    bookPages.value &&
-    readOptions.value
-  ) {
-    myLibrary.push(
-      new Book(
-        bookTitle.value,
-        bookAuthor.value,
-        bookPages.value,
-        readOptions.value
-      )
-    );
-  } else {
-    alert("Please provide more information");
-  }
+function uuidv4() {
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
+    (
+      c ^
+      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+    ).toString(16)
+  );
+}
 
-  console.log(myLibrary);
+function addBookToLibrary(bookTitle, bookAuthor, bookPages, readOptions) {
+  myLibrary.push(
+    new Book(uuidv4(), bookTitle, bookAuthor, bookPages, readOptions == "true")
+  );
   generateTable();
 }
 
-function displayBook() {
-  myLibrary.forEach((item) => console.log(item));
-}
-
-function removeBook() {
-  myLibrary.pop();
+function removeBook(id) {
+  myLibrary = myLibrary.filter((book) => book.id != id);
+  //bug here
   generateTable();
 }
 
-function changeRead() {}
+function changeRead(id) {
+  let book = myLibrary.filter((book) => book.id == id)[0];
+  book.read = !book.read;
+  removeBook(id);
+  addBookToLibrary(book.title, book.author, book.pages, book.read);
+}
 
-let submit = document.querySelector("#submit");
-let bookTitle = document.querySelector("#bookTitle");
-let bookAuthor = document.querySelector("#bookAuthor");
-let bookPages = document.querySelector("#bookPages");
-let readOptions = document.querySelector("#bookRead");
-
-let removeBtn = document.querySelector("#remove");
-let removeBtn2 = document.querySelector("#remove2");
-let removeBtn3 = document.querySelector("#remove3");
-let removeBtn4 = document.querySelector("#remove4");
-let removeBtn5 = document.querySelector("#remove5");
-let removeBtn6 = document.querySelector("#remove6");
+let submitBtn = document.querySelector("#submit");
+let bookTitleField = document.querySelector("#bookTitle");
+let bookAuthorField = document.querySelector("#bookAuthor");
+let bookPagesField = document.querySelector("#bookPages");
+let readOptionsField = document.querySelector("#bookRead");
 let input2 = document.querySelector("#submit");
 
-submit.addEventListener("click", (e) => {
-  addBookToLibrary();
-  displayBook();
-});
-
-removeBtn.addEventListener("click", () => {
-  myLibrary.splice(1, 1);
-  generateTable();
-});
-removeBtn2.addEventListener("click", () => {
-  myLibrary.splice(2, 1);
-  generateTable();
-});
-removeBtn3.addEventListener("click", () => {
-  myLibrary.splice(3, 1);
-  generateTable();
-});
-removeBtn4.addEventListener("click", () => {
-  myLibrary.splice(4, 1);
-  generateTable();
-});
-removeBtn5.addEventListener("click", () => {
-  myLibrary.splice(5, 1);
-  generateTable();
-});
-removeBtn6.addEventListener("click", () => {
-  myLibrary.splice(6, 1);
-  generateTable();
+submitBtn.addEventListener("click", (e) => {
+  addBookToLibrary(
+    bookTitleField.value,
+    bookAuthorField.value,
+    bookPagesField.value,
+    readOptionsField.value
+  );
 });
 
 function generateTable() {
-  // get the reference for the body
+  let table = document.querySelector("table");
+  if (table) {
+    table.remove();
+  }
+  myLibrary = myLibrary.sort((bookA, bookB) =>
+    bookA.title.replace(" ", "").toLowerCase() >
+    bookB.title.replace(" ", "").toLowerCase()
+      ? 1
+      : 0
+  );
   let body = document.getElementsByTagName("body")[0];
 
-  // creates a <table> element and a <tbody> element
   let tbl = document.createElement("table");
   let tblBody = document.createElement("tbody");
-  // creating all cells
+  let thead = document.createElement("thead");
+  thead.innerHTML =
+    "<tr><th>title</th><th>author</th><th>pages</th><th>read</th><th>opts</th></tr>";
+
+  tbl.appendChild(thead);
+
   for (var i = 0; i < myLibrary.length; i++) {
-    // creates a table row
     let row = document.createElement("tr");
     for (var j = 0; j < 5; j++) {
-      // Create a <td> element and a text node, make the text
-      // node the contents of the <td>, and put the <td> at
-      // the end of the table row
+      let bookId = myLibrary[i].id;
       let cell = document.createElement("td");
       let cellTextTitle = document.createTextNode(myLibrary[i].title);
       let cellTextAuthor = document.createTextNode(myLibrary[i].author);
@@ -157,31 +131,26 @@ function generateTable() {
       } else if (j === 3) {
         cell.appendChild(cellTextRead);
         row.appendChild(cell);
-      }
-      if (i === 1) {
-        row.appendChild(removeBtn);
-      } else if (i === 2) {
-        row.appendChild(removeBtn2);
-      } else if (i === 3) {
-        row.appendChild(removeBtn3);
-      } else if (i === 4) {
-        row.appendChild(removeBtn4);
-      } else if (i === 5) {
-        row.appendChild(removeBtn5);
-      } else if (i === 0) {
-      } else {
-        row.appendChild(removeBtn6);
+      } else if (j == 4) {
+        let removeBtn = document.createElement("button");
+        let changeBtn = document.createElement("button");
+        removeBtn.addEventListener("click", () => {
+          removeBook(bookId);
+        });
+        changeBtn.addEventListener("click", () => {
+          changeRead(bookId);
+        });
+        removeBtn.textContent = "x";
+        changeBtn.textContent = "change";
+        cell.appendChild(removeBtn);
+        cell.appendChild(changeBtn);
+        row.appendChild(cell);
       }
     }
-
-    // add the row to the end of the table body
     tblBody.appendChild(row);
   }
-  // put the <tbody> in the <table>
   tbl.appendChild(tblBody);
-  // appends <table> into <body>
   body.appendChild(tbl);
-  // sets the border attribute of tbl to 2;
   tbl.setAttribute("border", "2");
 }
 
