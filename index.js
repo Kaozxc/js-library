@@ -1,14 +1,14 @@
 let myLibrary = [
   {
     id: uuidv4(),
-    title: "TheHobbit",
+    title: "The Hobbit",
     author: "Tolkien",
     pages: 503,
     read: true,
   },
   {
     id: uuidv4(),
-    title: "HarryPotter",
+    title: "Harry Potter",
     author: "Rowling",
     pages: 403,
     read: false,
@@ -29,7 +29,7 @@ let myLibrary = [
   },
   {
     id: uuidv4(),
-    title: "TomClancy",
+    title: "Tom Clancy",
     author: "Clancy",
     pages: 150,
     read: true,
