@@ -43,7 +43,7 @@ function Book(id, title, author, pages, read) {
   this.pages = pages;
   this.read = read;
 }
-
+// Function to generate random id's
 function uuidv4() {
   return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
     (
@@ -55,14 +55,13 @@ function uuidv4() {
 
 function addBookToLibrary(bookTitle, bookAuthor, bookPages, readOptions) {
   myLibrary.push(
-    new Book(uuidv4(), bookTitle, bookAuthor, bookPages, readOptions == "true")
+    new Book(uuidv4(), bookTitle, bookAuthor, bookPages, readOptions == true)
   );
   generateTable();
 }
 
 function removeBook(id) {
   myLibrary = myLibrary.filter((book) => book.id != id);
-  //bug here
   generateTable();
 }
 
@@ -90,6 +89,7 @@ submitBtn.addEventListener("click", (e) => {
 });
 
 function generateTable() {
+  //Clearing table at start
   let table = document.querySelector("table");
   if (table) {
     table.remove();
