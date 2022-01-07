@@ -54,10 +54,21 @@ function uuidv4() {
 }
 
 function addBookToLibrary(bookTitle, bookAuthor, bookPages, readOptions) {
+  if(bookTitle  == '' || bookAuthor == '') {
+    alert('Please provide all information');
+    return;
+  } else if (bookTitle.length > 23) {
+    alert('Please write shorter version of the title');
+    return;
+  } else if ( bookPages > 2000 || bookPages <= 0) {
+    alert('Are you sure the book have this much pages?');
+    return;
+  }
   myLibrary.push(
     new Book(uuidv4(), bookTitle, bookAuthor, bookPages, readOptions == true)
   );
   generateTable();
+  refreshFields();
 }
 
 function removeBook(id) {
@@ -72,14 +83,19 @@ function changeRead(id) {
   addBookToLibrary(book.title, book.author, book.pages, book.read);
 }
 
+function refreshFields() {
+  bookTitleField.value = '';
+  bookAuthorField.value = '';
+  bookPagesField.value = '';
+}
+
 let submitBtn = document.querySelector("#submit");
 let bookTitleField = document.querySelector("#bookTitle");
 let bookAuthorField = document.querySelector("#bookAuthor");
 let bookPagesField = document.querySelector("#bookPages");
 let readOptionsField = document.querySelector("#bookRead");
-let input2 = document.querySelector("#submit");
 
-submitBtn.addEventListener("click", (e) => {
+submitBtn.addEventListener("click", () => {
   addBookToLibrary(
     bookTitleField.value,
     bookAuthorField.value,
